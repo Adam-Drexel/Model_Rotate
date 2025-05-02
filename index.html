@@ -3,45 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll to Rotate</title>
+  <title>Scroll to Rotate Model</title>
   <style>
     body {
       margin: 0;
-      height: 10000px; /* Adjust based on how much scroll space you want */
-      background: transparent;
-      overflow-x: hidden;
+      background: #111; /* Optional: Dark background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
     }
 
     img {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      height: 80vh;
+      max-width: 90%;
+      max-height: 90%;
+      position: absolute;
       pointer-events: none;
-      user-select: none;
     }
   </style>
 </head>
 <body>
-  <img id="viewer" src="Images/frame001.png" />
+  <img id="viewer" src="Images/frame001.png" alt="3D Rotation Frame" />
 
   <script>
-    const totalFrames = 151;
-    const viewer = document.getElementById('viewer');
+    const frameCount = 151;
+    let currentFrame = 1;
 
-    function pad(n) {
-      return n.toString().padStart(3, '0');
+    const img = document.getElementById("viewer");
+
+    function getFrameName(frame) {
+      return `Images/frame${String(frame).padStart(3, '0')}.png`;
     }
 
-    function updateImage(scrollAmount) {
-      const frame = Math.max(1, Math.min(totalFrames, Math.floor(scrollAmount / 10)));
-      viewer.src = `Images/frame${pad(frame)}.png`;
+    function updateImage() {
+      img.src = getFrameName(currentFrame);
     }
 
-    window.addEventListener('scroll', () => {
-      updateImage(window.scrollY);
+    window.addEventListener("wheel", (e) => {
+      if (e.deltaY > 0) {
+        currentFrame = (currentFrame % frameCount) + 1;
+      } else {
+        currentFrame = (currentFrame - 2 + frameCount) % frameCount + 1;
+      }
+      updateImage();
     });
+
+    // Optional: preload images
+    const preload = [];
+    for (let i = 1; i <= frameCount; i++) {
+      const image = new Image();
+      image.src = getFrameName(i);
+      preload.push(image);
+    }
   </script>
 </body>
 </html>
