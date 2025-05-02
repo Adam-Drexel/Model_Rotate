@@ -1,48 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scroll to Rotate</title>
   <style>
-    body, html {
+    body {
       margin: 0;
-      height: 200vh;
-      overflow-y: scroll;
-      background: #000;
+      height: 10000px; /* Adjust based on how much scroll space you want */
+      background: transparent;
+      overflow-x: hidden;
     }
-    #viewer {
+
+    img {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      max-width: 100%;
-      max-height: 100vh;
+      height: 80vh;
+      pointer-events: none;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-
-  <img id="viewer" src="images/frame001.png" alt="Rotation Frame" />
+  <img id="viewer" src="Images/frame001.png" />
 
   <script>
     const totalFrames = 151;
-    const imageElement = document.getElementById('viewer');
+    const viewer = document.getElementById('viewer');
 
-    function updateImage() {
-      const scrollY = window.scrollY;
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      const scrollPercent = scrollY / maxScroll;
-      const frameIndex = Math.min(
-        totalFrames - 1,
-        Math.floor(scrollPercent * totalFrames)
-      );
-      const filename = `images/frame${String(frameIndex + 1).padStart(3, '0')}.png`;
-      imageElement.src = filename;
+    function pad(n) {
+      return n.toString().padStart(3, '0');
     }
 
-    window.addEventListener('scroll', updateImage);
-    window.addEventListener('load', updateImage);
-  </script>
+    function updateImage(scrollAmount) {
+      const frame = Math.max(1, Math.min(totalFrames, Math.floor(scrollAmount / 10)));
+      viewer.src = `Images/frame${pad(frame)}.png`;
+    }
 
+    window.addEventListener('scroll', () => {
+      updateImage(window.scrollY);
+    });
+  </script>
 </body>
 </html>
+
