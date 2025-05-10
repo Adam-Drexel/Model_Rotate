@@ -5,56 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scroll to Rotate Model</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: #111; /* Optional: Dark background */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      overflow: hidden;
+      height: 8000px; /* Enables scrolling */
+      background: transparent;
+    }
+
+    body {
+      overflow-x: hidden;
     }
 
     img {
-      max-width: 90%;
-      max-height: 90%;
-      position: absolute;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-height: 90vh;
       pointer-events: none;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-  <img id="viewer" src="Images/frame001.png" alt="3D Rotation Frame" />
+  <img id="viewer" src="Images/frame001.png" alt="3D rotation frame" />
 
   <script>
     const frameCount = 151;
-    let currentFrame = 1;
+    const viewer = document.getElementById("viewer");
 
-    const img = document.getElementById("viewer");
+    function pad(n) {
+      return n.toString().padStart(3, "0");
+    }
 
-    function getFrameName(frame) {
-      return `Images/frame${String(frame).padStart(3, '0')}.png`;
+    function getFrameFromScroll() {
+      const scrollTop = window.scrollY;
+      const maxScroll = document.body.scrollHeight - window.innerHeight;
+      const scrollFraction = scrollTop / maxScroll;
+      const frameIndex = Math.min(
+        frameCount - 1,
+        Math.floor(scrollFraction * frameCount)
+      );
+      return frameIndex + 1;
     }
 
     function updateImage() {
-      img.src = getFrameName(currentFrame);
+      const frame = getFrameFromScroll();
+      viewer.src = `Images/frame${pad(frame)}.png`;
     }
 
-    window.addEventListener("wheel", (e) => {
-      if (e.deltaY > 0) {
-        currentFrame = (currentFrame % frameCount) + 1;
-      } else {
-        currentFrame = (currentFrame - 2 + frameCount) % frameCount + 1;
-      }
-      updateImage();
-    });
+    window.addEventListener("scroll", updateImage);
 
-    // Optional: preload images
-    const preload = [];
+    // Optional: Preload images
     for (let i = 1; i <= frameCount; i++) {
-      const image = new Image();
-      image.src = getFrameName(i);
-      preload.push(image);
+      const img = new Image();
+      img.src = `Images/frame${pad(i)}.png`;
     }
   </script>
 </body>
