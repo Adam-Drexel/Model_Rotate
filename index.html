@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll to Rotate Model</title>
+  <title>Scroll to Rotate (JPG)</title>
   <style>
     html, body {
       margin: 0;
-      height: 8000px; /* Enables scrolling */
       background: transparent;
-    }
-
-    body {
-      overflow-x: hidden;
+      height: 100%;
+      overflow: hidden;
     }
 
     img {
@@ -21,44 +18,39 @@
       left: 50%;
       transform: translate(-50%, -50%);
       max-height: 90vh;
+      max-width: 100vw;
       pointer-events: none;
       user-select: none;
     }
   </style>
 </head>
 <body>
-  <img id="viewer" src="Images/frame001.png" alt="3D rotation frame" />
+  <img id="viewer" src="images%20jpg/frame001.jpg" alt="3D rotation frame" />
 
   <script>
     const frameCount = 151;
+    let currentFrame = 1;
     const viewer = document.getElementById("viewer");
 
     function pad(n) {
       return n.toString().padStart(3, "0");
     }
 
-    function getFrameFromScroll() {
-      const scrollTop = window.scrollY;
-      const maxScroll = document.body.scrollHeight - window.innerHeight;
-      const scrollFraction = scrollTop / maxScroll;
-      const frameIndex = Math.min(
-        frameCount - 1,
-        Math.floor(scrollFraction * frameCount)
-      );
-      return frameIndex + 1;
-    }
-
     function updateImage() {
-      const frame = getFrameFromScroll();
-      viewer.src = `Images/frame${pad(frame)}.png`;
+      viewer.src = `images%20jpg/frame${pad(currentFrame)}.jpg`;
     }
 
-    window.addEventListener("scroll", updateImage);
+    window.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      currentFrame = (currentFrame + delta + frameCount - 1) % frameCount + 1;
+      updateImage();
+    }, { passive: false });
 
-    // Optional: Preload images
+    // Optional: preload images
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
-      img.src = `Images/frame${pad(i)}.png`;
+      img.src = `images%20jpg/frame${pad(i)}.jpg`;
     }
   </script>
 </body>
