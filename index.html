@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll to Rotate (JPG)</title>
+  <title>Scroll to Rotate (JPEG)</title>
   <style>
     html, body {
       margin: 0;
@@ -25,10 +25,10 @@
   </style>
 </head>
 <body>
-  <img id="viewer" src="images%20jpg/frame001.jpg" alt="3D rotation frame" />
+  <img id="viewer" src="Images/frame001.jpg" alt="3D rotation frame" />
 
   <script>
-    const frameCount = 151;
+    const frameCount = 149;
     let currentFrame = 1;
     const viewer = document.getElementById("viewer");
 
@@ -37,7 +37,7 @@
     }
 
     function updateImage() {
-      viewer.src = `images%20jpg/frame${pad(currentFrame)}.jpg`;
+      viewer.src = `Images/frame${pad(currentFrame)}.jpg`;
     }
 
     window.addEventListener("wheel", (e) => {
@@ -47,10 +47,10 @@
       updateImage();
     }, { passive: false });
 
-    // Optional: preload images
+    // Preload images (optional but recommended)
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
-      img.src = `images%20jpg/frame${pad(i)}.jpg`;
+      img.src = `Images/frame${pad(i)}.jpg`;
     }
   </script>
 </body>
