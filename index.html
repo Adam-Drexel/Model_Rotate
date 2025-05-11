@@ -27,7 +27,7 @@
   </style>
 </head>
 <body>
-  <img id="viewer" src="Images/frame001.png" alt="3D rotation frame" />
+  <img id="viewer" src="Images jpg/frame001.jpg" alt="3D rotation frame" />
 
   <script>
     const frameCount = 151;
@@ -50,7 +50,7 @@
 
     function updateImage() {
       const frame = getFrameFromScroll();
-      viewer.src = `Images/frame${pad(frame)}.png`;
+      viewer.src = `Images jpg/frame${pad(frame)}.jpg`;
     }
 
     window.addEventListener("scroll", updateImage);
@@ -58,7 +58,7 @@
     // Optional: Preload images
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
-      img.src = `Images/frame${pad(i)}.png`;
+      img.src = `Images jpg/frame${pad(i)}.jpg`;
     }
   </script>
 </body>
